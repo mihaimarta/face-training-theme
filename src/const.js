@@ -28,7 +28,7 @@ export const TRAINING_METADATA_EXTERNALID = 'vcs_face_externalId';
 export const TRAINING_COLLECTION_ID = 'vcs_face_isTrainingCollection';
 export const SAMPLE_COLLECTION_ID = 'vcs_face_isSampleCollection';
 
-export const ANALYSIS_MODEL_GROUP = 'adu_face_DeepVAKeyframeAnalyzer';
+export const ANALYSIS_MODEL_GROUP = 'adu_face_DeepVAMultiModelAnalyzer';
 export const ANALYSIS_MODEL_SUBGROUP = 'adu_av_analyzedValue';
 export const ANALYSIS_ID_FIELD = 'adu_valueId';
 export const ANALYSIS_VALUE_FIELD = 'adu_value';

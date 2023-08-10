@@ -5,6 +5,7 @@ import { Box, Grid, Button, Collapse } from '@material-ui/core';
 import { job as JobApi } from '@vidispine/vdt-api';
 import { useAutocomplete } from '@vidispine/vdt-react';
 import { ItemGrid, Pagination, SearchInput, SearchSuggestions } from '@vidispine/vdt-materialui';
+import { withStyles } from '@material-ui/core/styles';
 
 import { useSnackbar, useDialog } from '../Context';
 import TrainingCard from './TrainingCard';
@@ -20,7 +21,52 @@ import { mergeItems, deleteItem } from './utils';
 const ERROR_STATES = ['FAILED_TOTAL', 'ABORTED'];
 const SUCCESSFUL_STATES = ['FINISHED', 'FINISHED_WARNING'];
 
-export default ({ itemListType, onRefresh, state }) => {
+const styles = (theme) => ({
+  root: {
+    border: `1px solid ${theme.palette.generalBorderColor}`,
+    background: theme.palette.btnBackgroundColor,
+    borderRadius: '2px',
+  },
+  resultContainer: { height: 'inherit', width: 'inherit', display: 'flex' },
+  filterContainer: { minWidth: 220, marginBottom: theme.spacing(1) },
+  leftResultContainer: { flexDirection: 'column', marginRight: theme.spacing(2) },
+  rightResultContainer: { flexGrow: 1, minWidth: '0%' },
+  QueryBuilderContainer: {
+    marginBottom: theme.spacing(1),
+  },
+  input: {
+    paddingLeft: theme.spacing(1),
+    borderWidth: 1,
+    flex: 1,
+    borderStyle: 'solid',
+    borderColor: theme.palette.grey[400],
+    borderBottomLeftRadius: 2,
+    borderTopLeftRadius: 2,
+    borderBottomRightRadius: 0,
+    borderTopRightRadius: 0,
+    transition: 'border-color .3s ease-in',
+    height: 32,
+  },
+  focused: {
+    borderColor: theme.palette.primary.main,
+  },
+  searchBtn: {
+    backgroundColor:
+      theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.primary.main,
+    color: theme.palette.text.primary,
+    borderBottomRightRadius: 2,
+    borderTopRightRadius: 2,
+    borderLeftStyle: 'none',
+    borderBottomLeftRadius: 0,
+    borderTopLeftRadius: 0,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: theme.palette.grey[400],
+    height: 32,
+  },
+});
+
+const TrainingSearch = ({ itemListType, onRefresh, state, classes }) => {
   const { showDialog } = useDialog();
   const { setNotification } = useSnackbar();
   const {
@@ -105,6 +151,11 @@ export default ({ itemListType, onRefresh, state }) => {
         <Grid item xs={12}>
           <Box height={50} display="flex" alignItems="center">
             <SearchInput
+              classes={{
+                root: classes.root,
+                input: classes.input,
+                focused: classes.focused,
+              }}
               submitting={isLoading}
               searchPlaceholder="Search faces..."
               InputBaseProps={{ style: { flexGrow: 1 } }}
@@ -112,6 +163,9 @@ export default ({ itemListType, onRefresh, state }) => {
               onChange={setSearchText}
               SuggestionsComponent={SearchSuggestions}
               SuggestionsProps={{ suggestions }}
+              ButtonProps={{
+                className: 'searchBtn',
+              }}
             />
             <Button
               variant="contained"
@@ -162,3 +216,5 @@ export default ({ itemListType, onRefresh, state }) => {
     </Box>
   );
 };
+
+export default withStyles(styles)(TrainingSearch);

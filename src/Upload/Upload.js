@@ -8,7 +8,16 @@ import UploadForm from './UploadForm';
 // import { TRAINING_METADATA_KEY } from '../const';
 
 const styles = (theme) => ({
-  root: {},
+  editorRoot: {
+    '& > div': {
+      backgroundColor: theme.palette.elementBackgroundColor,
+    },
+  },
+  isEditing: {
+    '& > ul > div': {
+      backgroundColor: theme.palette.uploadlist,
+    },
+  },
   buttonContainer: {
     display: 'grid',
     gridAutoFlow: 'column',
@@ -82,21 +91,27 @@ const ItemUpload = ({ classes }) => {
       <Collapse in={!!uploadType} timeout="auto" unmountOnExit>
         <SwipableViews index={uploadType === 'content' ? 0 : 1}>
           <Upload
+            classes={{ editorRoot: classes.editorRoot, isEditing: classes.isEditing }}
             UploadButtonText="Upload Content"
             allowUploadToCollection={false}
             useUploadFiles={useContentUploadFiles}
             UploadEditorProps={{
               UploadFormComponent: UploadForm,
-              UploadFormProps: { trainingMaterial: uploadType === 'training' },
+              UploadFormProps: {
+                trainingMaterial: uploadType === 'training',
+              },
             }}
           />
           <Upload
+            classes={{ editorRoot: classes.editorRoot, isEditing: classes.isEditing }}
             UploadButtonText="Upload Faces"
             UploadToCollectionButtonText="Upload Faces to Collection"
             useUploadFiles={useTrainingUploadFiles}
             UploadEditorProps={{
               UploadFormComponent: UploadForm,
-              UploadFormProps: { trainingMaterial: uploadType === 'training' },
+              UploadFormProps: {
+                trainingMaterial: uploadType === 'training',
+              },
             }}
           />
         </SwipableViews>

@@ -8,7 +8,7 @@ const VIDISPINE_URL =
 const onProxyRes = (proxyRes) => delete proxyRes.headers['www-authenticate']; // eslint-disable-line no-param-reassign
 
 function useProxy(app) {
-  if (VIDISPINE_URL) {
+  if (false) {
     app.use(
       createProxyMiddleware(VIDISPINE_ENDPOINTS, {
         target: VIDISPINE_URL,

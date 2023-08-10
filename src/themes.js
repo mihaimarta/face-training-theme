@@ -1,9 +1,8 @@
-import { createMuiTheme } from '@material-ui/core/styles';
-import purple from '@material-ui/core/colors/purple';
+import { createTheme } from '@material-ui/core/styles';
+import { DarkTheme } from './themes/index';
 import 'typeface-roboto';
 
-const primary = purple[500];
-const primaryDark = purple[300];
+const primary = '#0068A9';
 const typography = {
   useNextVariants: true,
   htmlFontSize: 18,
@@ -18,7 +17,7 @@ const MuiTableCell = { head: { fontWeight: 600 } };
 const VdtQueryEntry = { queryGroup: { borderRadius: 0 } };
 const overrides = { MuiButton, MuiTableCell, VdtQueryEntry };
 
-export const light = createMuiTheme({
+export const light = createTheme({
   typography,
   overrides,
   palette: {
@@ -29,23 +28,13 @@ export const light = createMuiTheme({
     background: {
       default: '#f7f7f7',
     },
+    secondary: {
+      main: primary,
+    },
   },
 });
 
-export const dark = createMuiTheme({
-  typography,
-  overrides,
-  palette: {
-    type: 'dark',
-    primary: {
-      main: primaryDark,
-    },
-    background: {
-      default: 'rgb(40, 44, 52)',
-      paper: 'rgb(32, 35, 42)',
-    },
-  },
-});
+export const dark = createTheme(DarkTheme);
 
 export default {
   light,

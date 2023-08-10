@@ -18,7 +18,8 @@ if (basename.startsWith('http')) {
 const cookieOptions = {
   maxAge: 604800,
   path: basename,
-  sameSite: 'strict',
+  sameSite: 'none',
+  secure: true,
 };
 
 const VIDISPINE_SERVERS = 'VIDISPINE-SERVERS';
@@ -38,7 +39,7 @@ const encodeJsonCookie = (decodedJsonCookie) => {
   return encodedJsonCookie;
 };
 
-const getApiServerFromPathname = (pathname) => {
+/* const getApiServerFromPathname = (pathname) => {
   // match on '//vdt-react-videolibrary/server/https%3A%2F%2Ftest.myvidispine.com/item/'
   let match = pathToRegexp('/:basename/server/:serverUrl/:any*').exec(pathname);
   // match on '//vdt-react-videolibrary/server/https%3A%2F%2Ftest.myvidispine.com'
@@ -55,7 +56,7 @@ const getApiServerFromPathname = (pathname) => {
     if (e instanceof URIError) return undefined;
     throw e;
   }
-};
+}; */
 
 const redirectUnencodedPathname = (pathname) => {
   const match = pathToRegexp('/:basename/server/(.*)', [], { strict: true }).exec(pathname);
@@ -90,16 +91,12 @@ class ServerListRoute extends React.Component {
     const token = cookies.get(VIDISPINE_TOKEN);
     const servers = decodeJsonCookie(serversCookie);
     const { pathname } = window.location;
-    const serverUrl = getApiServerFromPathname(pathname);
+    const serverUrl = process.env.REACT_APP_VIDISPINE_URL;
     this.state = {
       servers,
       token,
     };
-    if (props.serverUrl && serverUrl !== props.serverUrl) {
-      const apiServer = { serverUrl: props.serverUrl, userName: '' };
-      this.state.apiServer = apiServer;
-      this.state.servers = [apiServer];
-    } else if (serverUrl) {
+    if (serverUrl) {
       if (servers) {
         const apiServer = servers.find((thisServer) => thisServer.serverUrl === serverUrl);
         if (apiServer) {

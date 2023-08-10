@@ -26,8 +26,9 @@ const defaultSortOptions = [
 
 const styles = (theme) => ({
   root: {
-    height: '95%',
-    width: '100%',
+    border: `1px solid ${theme.palette.generalBorderColor}`,
+    background: theme.palette.btnBackgroundColor,
+    borderRadius: '2px',
   },
   resultContainer: { height: 'inherit', width: 'inherit', display: 'flex' },
   filterContainer: { minWidth: 220, marginBottom: theme.spacing(1) },
@@ -35,6 +36,36 @@ const styles = (theme) => ({
   rightResultContainer: { flexGrow: 1, minWidth: '0%' },
   QueryBuilderContainer: {
     marginBottom: theme.spacing(1),
+  },
+  input: {
+    paddingLeft: theme.spacing(1),
+    borderWidth: 1,
+    flex: 1,
+    borderStyle: 'solid',
+    borderColor: theme.palette.grey[400],
+    borderBottomLeftRadius: 2,
+    borderTopLeftRadius: 2,
+    borderBottomRightRadius: 0,
+    borderTopRightRadius: 0,
+    transition: 'border-color .3s ease-in',
+    height: 32,
+  },
+  focused: {
+    borderColor: theme.palette.primary.main,
+  },
+  searchBtn: {
+    backgroundColor:
+      theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.primary.main,
+    color: theme.palette.text.primary,
+    borderBottomRightRadius: 2,
+    borderTopRightRadius: 2,
+    borderLeftStyle: 'none',
+    borderBottomLeftRadius: 0,
+    borderTopLeftRadius: 0,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: theme.palette.grey[400],
+    height: 32,
   },
 });
 
@@ -112,11 +143,16 @@ function SearchItemForm({
   };
 
   return (
-    <div className={classes.root}>
+    <div>
       <Grid container alignItems="center" justifyContent="flex-start">
         <Grid item sm={8} md={4} lg={6}>
           <Grid container wrap="nowrap">
             <SearchInput
+              classes={{
+                root: classes.root,
+                input: classes.input,
+                focused: classes.focused,
+              }}
               defaultValue={initialSearchText}
               onSubmit={setSearchText}
               submitting={isLoading}
@@ -128,6 +164,7 @@ function SearchItemForm({
               ButtonProps={{
                 onClick: onSearchButtonClick,
                 type: 'button',
+                className: 'searchBtn',
               }}
             />
           </Grid>

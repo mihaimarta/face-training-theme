@@ -16,6 +16,7 @@ const Card = compose(
       cursor: 'pointer',
       boxShadow: theme.shadows[1],
       transition: 'all 0.3s ease',
+      '& VdtMediaCardCard-checked': { borderColor: `${theme.palette.primary.main} !important` },
       '& .MuiCardHeader-root': {
         paddingRight: 8,
         transition: 'all 0.3s ease',
@@ -40,6 +41,7 @@ const Card = compose(
         backgroundColor: theme.palette.primary.main,
       },
     },
+    checked: { borderColor: `${theme.palette.primary.main} !important` },
   })),
   withDrop,
 )(VdtCollectionCard);

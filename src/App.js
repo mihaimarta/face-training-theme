@@ -54,7 +54,7 @@ function App({ username: userName, onLogout, serverUrl, onLogin }) {
         DialogProvider,
       ]}
     >
-      <Box height="100vh">
+      <Box minHeight="128vh">
         <Header userName={userName} onLogout={onLogout} serverUrl={serverUrl} onLogin={onLogin} />
         <Box mb={7.5} p={2}>
           <Switch>

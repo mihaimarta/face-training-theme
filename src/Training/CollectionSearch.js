@@ -4,6 +4,7 @@ import { withStyles, Box, Grid, Button, Typography, CircularProgress } from '@ma
 import { Add as AddIcon, ExpandMore as ExpandIcon } from '@material-ui/icons';
 import { compose, useSearch } from '@vidispine/vdt-react';
 import { SearchInput, withDrop } from '@vidispine/vdt-materialui';
+import { useTranslation } from 'react-i18next';
 import useSearchCollection from './useSearchCollection';
 
 import CollectionCard from './CollectionCard';
@@ -19,6 +20,51 @@ const defaultCollectionState = {
   rowsPerPage: 5,
   itemSearchDocument: {},
 };
+
+const styles = (theme) => ({
+  root: {
+    border: `1px solid ${theme.palette.generalBorderColor}`,
+    background: theme.palette.btnBackgroundColor,
+    borderRadius: '2px',
+  },
+  resultContainer: { height: 'inherit', width: 'inherit', display: 'flex' },
+  filterContainer: { minWidth: 220, marginBottom: theme.spacing(1) },
+  leftResultContainer: { flexDirection: 'column', marginRight: theme.spacing(2) },
+  rightResultContainer: { flexGrow: 1, minWidth: '0%' },
+  QueryBuilderContainer: {
+    marginBottom: theme.spacing(1),
+  },
+  input: {
+    paddingLeft: theme.spacing(1),
+    borderWidth: 1,
+    flex: 1,
+    borderStyle: 'solid',
+    borderColor: theme.palette.grey[400],
+    borderBottomLeftRadius: 2,
+    borderTopLeftRadius: 2,
+    borderBottomRightRadius: 0,
+    borderTopRightRadius: 0,
+    transition: 'border-color .3s ease-in',
+    height: 32,
+  },
+  focused: {
+    borderColor: theme.palette.primary.main,
+  },
+  searchBtn: {
+    backgroundColor:
+      theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.primary.main,
+    color: theme.palette.text.primary,
+    borderBottomRightRadius: 2,
+    borderTopRightRadius: 2,
+    borderLeftStyle: 'none',
+    borderBottomLeftRadius: 0,
+    borderTopLeftRadius: 0,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: theme.palette.grey[400],
+    height: 32,
+  },
+});
 
 const NewButton = compose(
   withStyles((theme) => ({
@@ -39,10 +85,16 @@ const NewButton = compose(
   withDrop,
 )(Button);
 
-const CollectionSearch = ({ collectionId, setCollectionId, onRefresh: onRefreshItems }) => {
+const CollectionSearch = ({
+  collectionId,
+  setCollectionId,
+  onRefresh: onRefreshItems,
+  classes,
+}) => {
   const { showDialog } = useDialog();
   const { trainingId } = useTraining();
   const { setNotification } = useSnackbar();
+  const { t } = useTranslation();
   const {
     state: { itemSearchDocument, queryParams, matrixParams, rowsPerPage } = {},
     setSearchText,
@@ -107,8 +159,17 @@ const CollectionSearch = ({ collectionId, setCollectionId, onRefresh: onRefreshI
         <Box height={50} display="flex" alignItems="center">
           <SearchInput
             onSubmit={setSearchText}
-            searchPlaceholder="Search collections..."
+            searchPlaceholder={t('searchCollections')}
             InputBaseProps={{ style: { flexGrow: 1 } }}
+            classes={{
+              root: classes.root,
+              input: classes.input,
+              focused: classes.focused,
+            }}
+            ButtonProps={{
+              type: 'button',
+              className: 'searchBtn',
+            }}
           />
         </Box>
       </Grid>
@@ -145,4 +206,4 @@ const CollectionSearch = ({ collectionId, setCollectionId, onRefresh: onRefreshI
   );
 };
 
-export default CollectionSearch;
+export default withStyles(styles)(CollectionSearch);

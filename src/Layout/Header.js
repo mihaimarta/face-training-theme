@@ -43,9 +43,33 @@ const headerButtonLinkStyles = (theme) => ({
   },
 });
 
+function inIframe() {
+  try {
+    return window.self !== window.top;
+  } catch (e) {
+    return true;
+  }
+}
+
+const styles = () => {
+  const isInIframe = inIframe();
+  return {
+    root: { display: 'flex' },
+    avatar: {
+      color: '#fff',
+      backgroundColor: '#556573',
+    },
+    header: {
+      backgroundColor: '#1D2126',
+      borderLeft: isInIframe ? '8px solid #101010' : 'none',
+      borderTop: isInIframe ? '8px solid #101010' : 'none',
+    },
+  };
+};
+
 const Button = withStyles(headerButtonLinkStyles, { name: 'VdtHeaderButtonLink' })(MUIButton);
 
-export default function Header({ userName, serverUrl, onLogout }) {
+function Header({ userName, serverUrl, onLogout, classes }) {
   const { t } = useTranslation();
   const breakpoint = useMediaQuery(({ breakpoints }) => breakpoints.down('sm'));
   const { showDialog } = useDialog();
@@ -70,9 +94,9 @@ export default function Header({ userName, serverUrl, onLogout }) {
   return (
     <AppBar position="relative">
       <Box
+        classes={{ root: classes.header }}
         px={2}
         py={0.5}
-        bgcolor="#20232a"
         color="common.white"
         width="100%"
         display="grid"
@@ -129,6 +153,7 @@ export default function Header({ userName, serverUrl, onLogout }) {
         </Box>
         <Box display="flex" justifyContent="flex-end" gridRow={breakpoint ? '1' : 'initial'}>
           <UserAvatarButton
+            classes={{ root: classes.root, avatar: classes.avatar }}
             userName={userName}
             onLogout={onLogout}
             togglePalette={onTogglePalette}
@@ -154,3 +179,5 @@ export default function Header({ userName, serverUrl, onLogout }) {
     </AppBar>
   );
 }
+
+export default withStyles(styles)(Header);

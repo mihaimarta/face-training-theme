@@ -41,6 +41,7 @@ export default function Item({
   const { showDialog } = useDialog();
   const { setNotification } = useSnackbar();
   const { isConfigured, isLoading } = useTraining();
+  console.log({ isConfigured });
   const itemId = propsItemId || paramsItemId;
   const queryParams = new URLSearchParams(useLocation().search);
   const startSeconds = Number(queryParams.get('t') || propsStartSeconds);

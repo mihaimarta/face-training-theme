@@ -17,7 +17,11 @@ function Index() {
   const { t } = useTranslation();
   document.title = APP_TITLE || t('appTitle');
   return (
-    <ThemeProvider themes={themes} props={vdtMuiLocale({ t, lng: i18n.language })}>
+    <ThemeProvider
+      defaultPaletteKey="dark"
+      themes={themes}
+      props={vdtMuiLocale({ t, lng: i18n.language })}
+    >
       <ServerListRoute
         AppComponent={App}
         LoginComponent={Login}
